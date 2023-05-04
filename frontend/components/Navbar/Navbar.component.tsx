@@ -3,30 +3,32 @@ import { useRouter } from "next/router";
 
 type Props = {
   routes: { id: number; name: string; route: string }[];
+  privateNav: boolean;
 };
 
-function Navbar({ routes }: Props) {
+function Navbar({ routes, privateNav }: Props) {
   const router = useRouter();
 
   return (
-    <nav>
+    <nav className="flex gap-4 bg-gray-300 px-4 py-2">
       {routes.map((item) => {
         return (
           <button key={item.id}>
             <Link href={item.route}>
               <div
-                className={`flex flex-col items-center space-y-1 transition duration-100 ease-in-out ${
+                className={`${
                   router.pathname === item.route
                     ? "text-sky-700"
                     : "text-stone-900"
                 }  hover:text-sky-700`}
               >
-                <p className="text-xs">{item.name}</p>
+                <p className="text-base">{item.name}</p>
               </div>
             </Link>
           </button>
         );
       })}
+      {privateNav ? <button>Logout</button> : null}
     </nav>
   );
 }

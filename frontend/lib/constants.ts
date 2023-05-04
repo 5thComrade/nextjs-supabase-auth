@@ -28,3 +28,7 @@ export const privateRoutes = [
     route: "/",
   },
 ];
+
+export const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/g;
+export const PASSWORD_REGEX =
+  /(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%&*]).{8,}/g;

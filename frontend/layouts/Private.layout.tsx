@@ -10,7 +10,7 @@ type LayoutPropType = {
 const PrivateLayout = (props: LayoutPropType) => {
   return (
     <main className="bg-white text-black px-8 py-4">
-      <Navbar routes={privateRoutes} />
+      <Navbar routes={privateRoutes} privateNav={true} />
 
       <section>{props.children}</section>
 
