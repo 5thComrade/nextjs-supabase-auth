@@ -1,3 +1,7 @@
-import DashboardContainer from "@/frontend/containers/Dashboard/Dashboard.container";
+import DashboardContainer, {
+  getServerSideProps,
+} from "@/frontend/containers/Dashboard/Dashboard.container";
+
+export { getServerSideProps };
 
 export default DashboardContainer;

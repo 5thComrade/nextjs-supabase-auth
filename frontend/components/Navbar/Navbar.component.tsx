@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { supabaseBrowserClient } from "@/frontend/lib/supabase";
 
 type Props = {
   routes: { id: number; name: string; route: string }[];
@@ -8,6 +9,12 @@ type Props = {
 
 function Navbar({ routes, privateNav }: Props) {
   const router = useRouter();
+
+  const handleLogout = async () => {
+    await supabaseBrowserClient.auth.signOut();
+
+    router.replace("/login");
+  };
 
   return (
     <nav className="flex gap-4 bg-gray-300 px-4 py-2">
@@ -28,7 +35,7 @@ function Navbar({ routes, privateNav }: Props) {
           </button>
         );
       })}
-      {privateNav ? <button>Logout</button> : null}
+      {privateNav ? <button onClick={handleLogout}>Logout</button> : null}
     </nav>
   );
 }

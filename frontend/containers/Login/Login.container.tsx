@@ -1,4 +1,7 @@
+import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { supabaseBrowserClient } from "@/frontend/lib/supabase";
 import withPublicLayout from "@/frontend/layouts/Public.layout";
 
 type Inputs = {
@@ -7,10 +10,25 @@ type Inputs = {
 };
 
 function Login() {
+  const router = useRouter();
   const { register, handleSubmit } = useForm<Inputs>();
 
-  const handleLogin: SubmitHandler<Inputs> = (data) => {
-    console.log("login: ", data);
+  const handleLogin: SubmitHandler<Inputs> = async (loginData) => {
+    const { data, error } = await supabaseBrowserClient.auth.signInWithPassword(
+      {
+        email: loginData.email,
+        password: loginData.password,
+      }
+    );
+
+    if (error) {
+      toast.error("Login unsuccessful!");
+      return;
+    }
+
+    router.replace("/protected/dashboard");
+    console.log("login", data);
+    toast.success("Welcome back!");
   };
   return (
     <main className="mt-4">

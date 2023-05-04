@@ -1,6 +1,8 @@
+import { useRouter } from "next/router";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "@/frontend/lib/constants";
+import { supabaseBrowserClient } from "@/frontend/lib/supabase";
 import withPublicLayout from "@/frontend/layouts/Public.layout";
 
 type Inputs = {
@@ -13,16 +15,27 @@ function SignUp() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
 
-  const handleSignup: SubmitHandler<Inputs> = (data) => {
-    if (data.password !== data.confirmPassword) {
+  const router = useRouter();
+
+  const handleSignup: SubmitHandler<Inputs> = async (signUpData) => {
+    if (signUpData.password !== signUpData.confirmPassword) {
       toast.error("Password don't match");
       return;
     }
-    console.log("signup: ", data);
+    const { data, error } = await supabaseBrowserClient.auth.signUp({
+      email: signUpData.email,
+      password: signUpData.password,
+    });
+
+    if (error) {
+      toast.error("SignUp unsuccessful. Try again!");
+      return;
+    }
+    router.replace("/login");
+    toast.success("Confirmation email sent to your mail id!");
   };
 
   return (
