@@ -1,15 +1,17 @@
+import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { supabaseBrowserClient } from "@/frontend/lib/supabase";
-import withPublicLayout from "@/frontend/layouts/Public.layout";
+import PublicLayout from "@/frontend/layouts/Public.layout";
+import type { NextPageWithLayout } from "@/pages/_app";
 
 type Inputs = {
   email: string;
   password: string;
 };
 
-function Login() {
+const Login: NextPageWithLayout = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<Inputs>();
 
@@ -68,6 +70,10 @@ function Login() {
       </form>
     </main>
   );
-}
+};
 
-export default withPublicLayout(Login);
+Login.getLayout = function getLayout(page: ReactElement) {
+  return <PublicLayout>{page}</PublicLayout>;
+};
+
+export default Login;

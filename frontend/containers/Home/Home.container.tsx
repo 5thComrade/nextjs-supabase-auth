@@ -1,6 +1,8 @@
-import withPublicLayout from "@/frontend/layouts/Public.layout";
+import type { ReactElement } from "react";
+import PublicLayout from "@/frontend/layouts/Public.layout";
+import type { NextPageWithLayout } from "@/pages/_app";
 
-function Home() {
+const Home: NextPageWithLayout = () => {
   return (
     <main className="mt-4">
       <h1 className="text-xl font-light">Welcome</h1>
@@ -22,6 +24,10 @@ function Home() {
       </p>
     </main>
   );
-}
+};
 
-export default withPublicLayout(Home);
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <PublicLayout>{page}</PublicLayout>;
+};
+
+export default Home;

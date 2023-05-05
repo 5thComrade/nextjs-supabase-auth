@@ -1,3 +1,5 @@
+import type { ReactElement, ReactNode } from "react";
+import type { NextPage } from "next";
 import { Nunito } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "@/styles/globals.css";
@@ -9,10 +11,20 @@ const nunito = Nunito({
   variable: "--font-nunito",
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout<P = any, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout || ((page) => page);
+
   return (
     <main className={`${nunito.variable} font-nunito`}>
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />)}
       <Toaster position="top-right" />
     </main>
   );

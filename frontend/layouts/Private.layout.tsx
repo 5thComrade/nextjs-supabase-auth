@@ -19,18 +19,4 @@ const PrivateLayout = (props: LayoutPropType) => {
   );
 };
 
-const withPrivateLayout = (
-  WrappedComponent: React.JSXElementConstructor<any>
-) => {
-  return class WithPrivateLayout extends React.Component {
-    render() {
-      return (
-        <PrivateLayout>
-          <WrappedComponent {...this.props} />
-        </PrivateLayout>
-      );
-    }
-  };
-};
-
-export default withPrivateLayout;
+export default PrivateLayout;

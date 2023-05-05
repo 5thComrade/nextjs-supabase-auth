@@ -1,9 +1,11 @@
+import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "@/frontend/lib/constants";
 import { supabaseBrowserClient } from "@/frontend/lib/supabase";
-import withPublicLayout from "@/frontend/layouts/Public.layout";
+import PublicLayout from "@/frontend/layouts/Public.layout";
+import type { NextPageWithLayout } from "@/pages/_app";
 
 type Inputs = {
   email: string;
@@ -11,7 +13,7 @@ type Inputs = {
   confirmPassword: string;
 };
 
-function SignUp() {
+const SignUp: NextPageWithLayout = () => {
   const {
     register,
     handleSubmit,
@@ -114,6 +116,10 @@ function SignUp() {
       </form>
     </main>
   );
-}
+};
 
-export default withPublicLayout(SignUp);
+SignUp.getLayout = function getLayout(page: ReactElement) {
+  return <PublicLayout>{page}</PublicLayout>;
+};
+
+export default SignUp;

@@ -19,16 +19,4 @@ const PublicLayout = (props: LayoutPropType) => {
   );
 };
 
-const withPublicLayout = (WrappedComponent: React.ComponentType) => {
-  return class WithPublicLayout extends React.Component {
-    render() {
-      return (
-        <PublicLayout>
-          <WrappedComponent {...this.props} />
-        </PublicLayout>
-      );
-    }
-  };
-};
-
-export default withPublicLayout;
+export default PublicLayout;

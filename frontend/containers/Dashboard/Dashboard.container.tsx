@@ -1,17 +1,19 @@
+import type { ReactElement } from "react";
 import {
   createServerSupabaseClient,
   Session,
   User,
 } from "@supabase/auth-helpers-nextjs";
 import { GetServerSideProps } from "next";
-import withPrivateLayout from "@/frontend/layouts/Private.layout";
+import PrivateLayout from "@/frontend/layouts/Private.layout";
+import type { NextPageWithLayout } from "@/pages/_app";
 
 type Props = {
-  initialSession: Session;
+  session: Session;
   user: User;
 };
 
-function Dashboard({ initialSession, user }: Props) {
+const Dashboard: NextPageWithLayout = ({ session, user }: Props) => {
   return (
     <main className="mt-4">
       <h1 className="text-xl font-light">Hey User!</h1>
@@ -24,7 +26,7 @@ function Dashboard({ initialSession, user }: Props) {
       <p className="font-light">{`This is a protected page, if you are able to view this page that means you're authentication was successful.`}</p>
     </main>
   );
-}
+};
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const supabase = createServerSupabaseClient(ctx);
@@ -46,10 +48,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      initialSession: session,
+      session: session,
       user: user,
     },
   };
 };
 
-export default withPrivateLayout(Dashboard);
+Dashboard.getLayout = function getLayout(page: ReactElement) {
+  return <PrivateLayout>{page}</PrivateLayout>;
+};
+
+export default Dashboard;
